@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemDefinition" load_steps=2 format=3 uid="uid://bof24jiu4c62b"]
+
+[ext_resource type="Script" uid="uid://bclc8d2e3axvc" path="res://data/defenitions/item_definition.gd" id="1_nrqy1"]
+
+[resource]
+script = ExtResource("1_nrqy1")
+id = &"\"stone\""
+display_name = "\"Stone\""
+metadata/_custom_type_script = "uid://bclc8d2e3axvc"
