@@ -16,6 +16,7 @@ var player_stamina: float = 100.0
 # We instantiate our logic systems here. They are not nodes.
 var time_system: TimeSystem
 var player_inventory_system: InventorySystem
+var world_system: WorldSystem # <<< NEW SYSTEM
 
 # --- Input State ---
 # The View (player_view.gd) will write to this.
@@ -33,17 +34,37 @@ signal player_position_changed(new_position: Vector2)
 func _ready():
 	# --- Instantiate Simulation Systems ---
 	time_system = TimeSystem.new()
+	world_system = WorldSystem.new() # <<< NEW SYSTEM
 	
 	# Load the player's inventory data (you'll need to create this .tres file)
+	# NOTE: This path assumes you fixed the typo and created the file.
 	var player_inv_data = load("res://data/player_inventory.tres") as InventoryDefinition
 	if player_inv_data:
 		player_inventory_system = InventorySystem.new(player_inv_data)
 	else:
 		printerr("SimulationManager: Failed to load player_inventory.tres!")
 		# Create a fallback empty inventory
-		player_inventory_system = InventorySystem.new(InventoryDefinition.new())
+		var new_inv_def = InventoryDefinition.new()
+		# Check if 'definitions' folder was renamed
+		var inventory_slot_script = load("res://data/definitions/inventory_slot.gd")
+		if inventory_slot_script == null:
+			inventory_slot_script = load("res://data/defenitions/inventory_slot.gd")
+			
+		new_inv_def.slots.resize(36) # Default to 36 slots
+		for i in 36:
+			var slot = InventorySlot.new()
+			# We must assign the script this way if it's not a global class
+			if inventory_slot_script and !slot.get_script():
+				slot.set_script(inventory_slot_script)
+			new_inv_def.slots[i] = slot
+		player_inventory_system = InventorySystem.new(new_inv_def)
 		
 	print("SimulationManager: Ready.")
+	
+	# --- "Glue" Systems Together ---
+	# We connect the TimeSystem's signal to the WorldSystem's function.
+	# The two systems don't know about each other.
+	time_system.day_passed.connect(world_system.on_day_passed)
 
 
 # --- Deliberate Execution Order ---
@@ -56,7 +77,9 @@ func _physics_process(delta: float):
 	_update_player_simulation(delta)
 	
 	# 3. Update World (e.g., crop growth, furnace processing)
-	# ... (world_system.update(delta)) ...
+	# The world_system is now mostly event-driven by time_system,
+	# but you could add a world_system.update(delta) here if needed
+	# for things like processing machines.
 	
 	# 4. Update NPCs
 	# ... (npc_system.update(delta)) ...
@@ -99,3 +122,8 @@ func set_player_position(new_position: Vector2):
 # system and connect to its signals.
 func get_player_inventory_system() -> InventorySystem:
 	return player_inventory_system
+
+# --- NEW PUBLIC API ---
+## The View (e.g., the TileMap) can get this to connect signals.
+func get_world_system() -> WorldSystem:
+	return world_system
