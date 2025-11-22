@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=4 uid="uid://d1vkqqeqyg0yh"]
+[gd_scene load_steps=6 format=4 uid="uid://d1vkqqeqyg0yh"]
 
+[ext_resource type="Script" uid="uid://bg15ks7mvu3sc" path="res://scripts/view/world_view.gd" id="1_0sr1o"]
 [ext_resource type="Texture2D" uid="uid://ddvke7d1d57ok" path="res://assets/art/environment/free/isometric_tileset/spritesheet.png" id="1_sul5r"]
 [ext_resource type="PackedScene" uid="uid://ckbiyamoes2qq" path="res://scenes/player/player_view.tscn" id="2_7h61r"]
 
@@ -151,8 +152,10 @@ tile_shape = 1
 tile_size = Vector2i(32, 16)
 sources/0 = SubResource("TileSetAtlasSource_sul5r")
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("active_layer")]
 y_sort_enabled = true
+script = ExtResource("1_0sr1o")
+active_layer = NodePath("TileMapLayer")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 y_sort_enabled = true

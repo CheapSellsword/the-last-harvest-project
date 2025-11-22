@@ -61,3 +61,61 @@ func _update_animation(iso_direction: Vector2):
 				pass # play("walk_up")
 	else:
 		pass # play("idle_down")
+# New variables for interaction
+@onready var cursor_visual = $Cursor # Ensure you added this node!
+
+# How far away can we select?
+const INTERACTION_DISTANCE: float = 64.0
+
+func _physics_process(_delta: float):
+	# ... existing movement code ... (Input -> iso_direction -> Sim -> move_and_slide)
+	
+	_handle_interaction_input()
+
+func _handle_interaction_input():
+	# 1. Calculate where the "cursor" should be.
+	# For keyboard: It's in front of the player.
+	# For mouse: It's at the mouse position.
+	
+	# Let's implement a simple "Tile in front of player" logic for now.
+	# We need the last non-zero input direction to know which way we are facing.
+	var facing_dir = velocity.normalized()
+	if facing_dir.length() == 0:
+		# Fallback if standing still (you might want to store 'last_facing_dir' variable)
+		facing_dir = Vector2.DOWN 
+	
+	# Calculate global target position (offset by some distance)
+	var target_pos = global_position + (facing_dir * 32.0)
+	
+	# 2. Snap to Grid (View Logic)
+	# Isometric grid snapping can be tricky.
+	# Godot's TileMapLayers have a built-in function: local_to_map().
+	# However, PlayerView doesn't know about the TileMap.
+	# We will ESTIMATE grid coordinates purely for visual feedback here.
+	# Assuming standard isometric projection (2:1 ratio).
+	
+	# Simple hack for snapping:
+	if cursor_visual:
+		cursor_visual.global_position = target_pos
+	
+	# 3. Send Input
+	if Input.is_action_just_pressed("ui_accept"): # Spacebar or Enter
+		# We need to convert this pixel position to Grid Coordinates for the Simulation.
+		# Since we don't have reference to the TileMap here, we have two choices:
+		# A. Pass global pixels to Sim, let Sim figure it out.
+		# B. Use a helper to convert.
+		
+		# Let's send Global Pixels and let the Sim handles the specific mapping logic
+		# OR, strictly, the Sim shouldn't know about pixels.
+		
+		# ARCHITECTURE FIX: The PlayerView should ideally ask the Game/WorldView to convert.
+		# But to keep it simple for Phase 3:
+		# We will calculate a "rough" grid coordinate based on tile size (e.g. 32x16).
+		
+		# Isometric conversion (Cartesian to Iso Grid):
+		var grid_x = int(target_pos.x / 32.0 + target_pos.y / 16.0)
+		var grid_y = int(target_pos.y / 16.0 - target_pos.x / 32.0)
+		var grid_coords = Vector2i(grid_x, grid_y)
+		
+		# Send Intent
+		SimulationManager.player_interact_grid(grid_coords)
