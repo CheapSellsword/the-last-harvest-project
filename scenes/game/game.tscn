@@ -157,6 +157,9 @@ y_sort_enabled = true
 script = ExtResource("1_0sr1o")
 active_layer = NodePath("TileMapLayer")
 
+[node name="PlayerView" parent="." instance=ExtResource("2_7h61r")]
+position = Vector2(-47, -23)
+
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 y_sort_enabled = true
 texture_filter = 1
@@ -180,6 +183,3 @@ position = Vector2(0, -24)
 tile_map_data = PackedByteArray("AAD+/wIAAAAGAAUAAAD+/wEAAAAGAAUAAAD+/wAAAAAGAAUAAAD+////AAAGAAUAAAD+//7/AAAGAAUAAAD+//3/AAAGAAUAAAD+//z/AAAGAAUAAAD9//3/AAAGAAUAAAD//wAAAAAGAAUAAAD///7/AAAGAAUAAAD/////AAAGAAUAAAD//wEAAAAGAAUAAAD//wIAAAAGAAUAAAAAAAAAAAAGAAUAAAD6/wwAAAAEAAMAAAD6/woAAAAEAAMAAAD6/wsAAAAEAAMAAAD5/wsAAAAEAAMAAAA=")
 tile_set = SubResource("TileSet_ifgtf")
 y_sort_origin = 24
-
-[node name="PlayerView" parent="." instance=ExtResource("2_7h61r")]
-position = Vector2(-47, -23)
