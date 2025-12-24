@@ -1,9 +1,6 @@
 # time_system.gd
-# A modular, non-node class for handling game time.
-# It is instantiated and "ticked" by the SimulationManager.
-
 class_name TimeSystem
-extends RefCounted # Use RefCounted so it's auto-managed
+extends RefCounted 
 
 # --- Signals ---
 signal minute_passed(current_minute: int, current_hour: int)
@@ -15,18 +12,16 @@ signal season_passed(current_season: int)
 enum Season { SPRING, SUMMER, FALL, WINTER }
 
 var current_minute: int = 0
-var current_hour: int = 6 # Start at 6 AM
+var current_hour: int = 6 
 var current_day: int = 1
 var current_season: Season = Season.SPRING
 
 # --- Config ---
-# How many real-world seconds per game minute?
 var seconds_per_minute: float = 0.7
 var _time_accumulator: float = 0.0
 
 # --- Public API ---
 
-## This is the "tick" function called by SimulationManager.
 func update(delta: float):
 	_time_accumulator += delta
 	
@@ -42,7 +37,6 @@ func _advance_minute():
 		_advance_hour()
 		
 	minute_passed.emit(current_minute, current_hour)
-	# print("Time: %s:%s" % [current_hour, str(current_minute).pad_zeros(2)]) # Uncomment for debugging
 
 func _advance_hour():
 	current_hour += 1
@@ -54,9 +48,6 @@ func _advance_hour():
 	hour_passed.emit(current_hour, current_day)
 
 func _advance_day():
-	# In Stardew, time "stops" at 2 AM (which is hour 26)
-	# This logic would be more complex to handle that.
-	# For now, a simple 24-hour clock.
 	current_day += 1
 	
 	if current_day > 28:
@@ -64,12 +55,10 @@ func _advance_day():
 		_advance_season()
 		
 	day_passed.emit(current_day, current_season)
-	
-	# This is where you trigger "end of day" logic
-	# (e.g., save game, grow crops, process machines).
 
 func _advance_season():
-	current_season = (current_season + 1) % 4 # Loop back to SPRING
+	# FIX: Explicitly cast the result to the Season enum type
+	current_season = ((current_season + 1) % 4) as Season
 	season_passed.emit(current_season)
 
 # --- Getters ---
