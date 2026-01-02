@@ -1,15 +1,60 @@
-[gd_scene load_steps=4 format=3 uid="uid://ckbiyamoes2qq"]
+[gd_scene load_steps=9 format=3 uid="uid://ckbiyamoes2qq"]
 
 [ext_resource type="Script" uid="uid://dqrf88irsln7x" path="res://scripts/view/player_view.gd" id="1_s6xuj"]
+[ext_resource type="Texture2D" uid="uid://c7c47foudx1qe" path="res://assets/art/player/isometric_character_asset_pack/isometric_character_walk.png" id="2_efypc"]
 [ext_resource type="Texture2D" uid="uid://de11j1xyu3vf0" path="res://assets/art/ui/cursor.png" id="3_efypc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2bfvj"]
 size = Vector2(128, 128)
 
+[sub_resource type="Animation" id="Animation_pvka3"]
+resource_name = "walk_down"
+length = 1.2
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.90000004, 1, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+}
+
+[sub_resource type="Animation" id="Animation_sdk01"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_w53eo"]
+_data = {
+&"RESET": SubResource("Animation_sdk01"),
+&"walk_down": SubResource("Animation_pvka3")
+}
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_2bfvj"]
+
 [node name="PlayerView" type="CharacterBody2D"]
 script = ExtResource("1_s6xuj")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_efypc")
+hframes = 12
+vframes = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_2bfvj")
@@ -20,3 +65,12 @@ shape = SubResource("RectangleShape2D_2bfvj")
 position = Vector2(-149, 149)
 scale = Vector2(0.06875, 0.06875)
 texture = ExtResource("3_efypc")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_w53eo")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_2bfvj")
+anim_player = NodePath("../AnimationPlayer")
