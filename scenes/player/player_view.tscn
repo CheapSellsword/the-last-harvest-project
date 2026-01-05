@@ -6,9 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://f78erhx7605t" path="res://assets/art/player/isometric_character_asset_pack/isometric_character_idle.png" id="3_sdk01"]
 [ext_resource type="Texture2D" uid="uid://ddy7ftq1xj2m8" path="res://assets/art/player/isometric_character_asset_pack/isometric_character_run.png" id="4_pvka3"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2bfvj"]
-size = Vector2(128, 128)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_n8hwo"]
 atlas = ExtResource("3_sdk01")
 region = Rect2(0, 0, 64, 64)
@@ -1588,8 +1585,16 @@ animations = [{
 "speed": 9.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2bfvj"]
+size = Vector2(128, 128)
+
 [node name="PlayerView" type="CharacterBody2D"]
 script = ExtResource("1_s6xuj")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_fkksv")
+animation = &"run_left"
+frame_progress = 0.867241
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_2bfvj")
@@ -1600,7 +1605,3 @@ shape = SubResource("RectangleShape2D_2bfvj")
 position = Vector2(-149, 149)
 scale = Vector2(0.06875, 0.06875)
 texture = ExtResource("3_efypc")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_fkksv")
-animation = &"idle_down"

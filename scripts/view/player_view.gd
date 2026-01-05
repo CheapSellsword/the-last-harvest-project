@@ -28,7 +28,7 @@ func _handle_movement():
 	SimulationManager.set_player_position(global_position)
 	
 	# 6. Update View
-	_update_animation(input_direction)
+	#_update_animation(input_direction)
 
 func _handle_interaction_input():
 	var facing_dir = velocity.normalized()
@@ -52,8 +52,8 @@ func _handle_interaction_input():
 		# Interact glue code
 		SimulationManager.player_interact_grid(grid_coords)
 
-func _update_animation(_move_direction: Vector2):
+#func _update_animation(_move_direction: Vector2):
 	# Animation logic placeholder...
 	# Note: _move_direction is now screen-space. 
 	# (0, -1) is Up, (1, 0) is Right.
-	pass
+	#pass
