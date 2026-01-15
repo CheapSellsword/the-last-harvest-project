@@ -1,19 +1,14 @@
 # simulation_manager.gd
 extends Node
 
-# --- Core Game State ---
-var player_stamina: float = 100.0
-
 # --- Modular Systems ---
 var time_system: TimeSystem
 var player_inventory_system: InventorySystem
 var world_system: WorldSystem
 var movement_system: MovementSystem 
+var player_stats_system: StatsSystem # New System
 
 # --- Signals ---
-# FIX: Suppress warning for unused signal (reserved for future UI usage)
-@warning_ignore("unused_signal")
-signal player_stamina_changed(new_stamina: float)
 signal player_position_changed(new_position: Vector2)
 
 func _ready():
@@ -21,6 +16,7 @@ func _ready():
 	time_system = TimeSystem.new()
 	world_system = WorldSystem.new()
 	movement_system = MovementSystem.new()
+	player_stats_system = StatsSystem.new(100.0) # Initialize with 100 stamina
 	
 	# Load player inventory
 	var player_inv_data = load("res://data/player_inventory.tres") as InventoryDefinition
@@ -50,16 +46,23 @@ func _physics_process(delta: float):
 	# 1. Update Time
 	time_system.update(delta)
 	
-	# 2. Update Player Logic (Delegated to System)
-	movement_system.update(delta, player_stamina)
+	# 2. Update Player Logic
+	# Pass stamina from stats system to movement system
+	movement_system.update(delta, player_stats_system.current_stamina)
 	
-	# 3. Update World
+	# 3. Update World (Uncomment when dynamic world logic is added)
 	# world_system.update(delta) 
 
 # --- Glue Code: Interaction ---
 func player_interact_grid(grid_coords: Vector2i):
-	print("Simulation: Player trying to interact at ", grid_coords)
-	world_system.set_tile_tilled(grid_coords)
+	# Example: Tilling soil costs stamina
+	var stamina_cost = 2.0
+	
+	if player_stats_system.consume_stamina(stamina_cost):
+		print("Simulation: Tilling at ", grid_coords)
+		world_system.set_tile_tilled(grid_coords)
+	else:
+		print("Simulation: Too tired to till!")
 
 # --- Public API for the "View" ---
 
@@ -78,3 +81,6 @@ func get_player_inventory_system() -> InventorySystem:
 
 func get_world_system() -> WorldSystem:
 	return world_system
+
+func get_player_stats() -> StatsSystem:
+	return player_stats_system

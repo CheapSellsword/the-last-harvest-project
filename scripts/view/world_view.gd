@@ -7,12 +7,6 @@ extends Node2D
 ## The TileMapLayer we want to paint on (drag your "Ground" layer here).
 @export var active_layer: TileMapLayer
 
-# We need to map our Simulation data (state) to View data (Atlas Coords).
-# In a real project, you'd put this in a nice Resource lookup table.
-# For now, let's hardcode: Tilled Dirt = Atlas Coords (1, 0)
-const TILE_GRASS_COORDS = Vector2i(0, 0) # Assuming 0,0 is grass
-const TILE_TILLED_COORDS = Vector2i(4, 0) # Assuming 4,0 is tilled dirt (adjust based on your spritesheet)
-
 func _ready():
 	if !active_layer:
 		printerr("WorldView: No active TileMapLayer assigned!")
@@ -30,15 +24,16 @@ func _ready():
 
 func _on_tile_changed(map_coords: Vector2i, data: WorldTileData):
 	# The Simulation told us a tile changed. We just check the state and paint.
+	# We rely on GameConsts for the visual definition.
 	if data.is_tilled:
-		_paint_tile(map_coords, TILE_TILLED_COORDS)
+		_paint_tile(map_coords, GameConsts.ATLAS_COORDS_TILLED)
 	
-	# Later: Add logic for watered soil, crops, etc.
+	# Example expansion for future logic:
 	# if data.is_watered: ...
 
 func _on_tile_cleared(map_coords: Vector2i):
 	# Revert to default (grass)
-	_paint_tile(map_coords, TILE_GRASS_COORDS)
+	_paint_tile(map_coords, GameConsts.ATLAS_COORDS_GRASS)
 
 func _paint_tile(map_coords: Vector2i, atlas_coords: Vector2i):
 	# Use source_id 0 (assuming your tileset is source 0)
