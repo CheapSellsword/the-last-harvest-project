@@ -182,4 +182,6 @@ tile_set = SubResource("TileSet_ifgtf")
 y_sort_origin = 24
 
 [node name="PlayerView" parent="." instance=ExtResource("2_7h61r")]
+z_index = 1
+y_sort_enabled = true
 position = Vector2(-47, -23)
