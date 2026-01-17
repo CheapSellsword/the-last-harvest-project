@@ -6,12 +6,6 @@
 class_name WorldTileData
 extends Resource
 
-## Is this patch of ground tilled?
-@export var is_tilled: bool = false
-
-## Is this patch of ground watered? (We'd reset this daily)
-@export var is_watered: bool = false
-
 ## What crop is planted here?
 @export var crop_definition_id: StringName = &""
 

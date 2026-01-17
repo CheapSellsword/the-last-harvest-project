@@ -25,21 +25,6 @@ func get_tile_data(map_coords: Vector2i) -> WorldTileData:
 		return _tile_data[map_coords]
 	return null # This tile is default (e.g., grass)
 
-## Use this to change a tile, e.g., tilling it.
-func set_tile_tilled(map_coords: Vector2i):
-	# Get existing data or create new data
-	var data = get_tile_data(map_coords)
-	if !data:
-		data = WorldTileData.new()
-		_tile_data[map_coords] = data
-	
-	# Make the simulation change
-	data.is_tilled = true
-	
-	# Tell the "View" that this tile has changed
-	tile_changed.emit(map_coords, data)
-	print("WorldSystem: Tilled tile at %s" % map_coords)
-
 ## Clears data for a tile, returning it to default (e.g., grass).
 func clear_tile_data(map_coords: Vector2i):
 	if _tile_data.has(map_coords):
@@ -54,14 +39,10 @@ func on_day_passed(_day: int, _season: int):
 	for coords in _tile_data:
 		var data: WorldTileData = _tile_data[coords]
 		
-		# 1. Dry out soil
-		data.is_watered = false
-		
 		# 2. Grow crops (if watered)
 		if data.crop_definition_id != &"":
 			# Add growth logic here later
 			pass
 		
 		# 3. Emit a change signal so the view updates
-		#    (e.g., to remove the "watered" look)
 		tile_changed.emit(coords, data)

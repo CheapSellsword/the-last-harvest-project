@@ -23,13 +23,12 @@ func _ready():
 # --- Signal Handlers ---
 
 func _on_tile_changed(map_coords: Vector2i, data: WorldTileData):
-	# The Simulation told us a tile changed. We just check the state and paint.
-	# We rely on GameConsts for the visual definition.
-	if data.is_tilled:
-		_paint_tile(map_coords, GameConsts.ATLAS_COORDS_TILLED)
+	# The Simulation told us a tile changed.
+	# Tilling visualization removed.
 	
-	# Example expansion for future logic:
-	# if data.is_watered: ...
+	# Future implementation:
+	# if data.crop_definition_id != &"": ...
+	pass
 
 func _on_tile_cleared(map_coords: Vector2i):
 	# Revert to default (grass)

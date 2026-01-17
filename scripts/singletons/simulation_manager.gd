@@ -6,7 +6,7 @@ var time_system: TimeSystem
 var player_inventory_system: InventorySystem
 var world_system: WorldSystem
 var movement_system: MovementSystem 
-var player_stats_system: StatsSystem # New System
+var player_stats_system: StatsSystem
 
 # --- Signals ---
 signal player_position_changed(new_position: Vector2)
@@ -55,14 +55,9 @@ func _physics_process(delta: float):
 
 # --- Glue Code: Interaction ---
 func player_interact_grid(grid_coords: Vector2i):
-	# Example: Tilling soil costs stamina
-	var stamina_cost = 2.0
-	
-	if player_stats_system.consume_stamina(stamina_cost):
-		print("Simulation: Tilling at ", grid_coords)
-		world_system.set_tile_tilled(grid_coords)
-	else:
-		print("Simulation: Too tired to till!")
+	# Tilling system removed for now. 
+	# This function acts as a placeholder for future tool interactions.
+	print("Simulation: Interact at ", grid_coords)
 
 # --- Public API for the "View" ---
 
