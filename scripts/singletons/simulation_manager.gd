@@ -16,7 +16,7 @@ func _ready():
 	time_system = TimeSystem.new()
 	world_system = WorldSystem.new()
 	movement_system = MovementSystem.new()
-	player_stats_system = StatsSystem.new(100.0) # Initialize with 100 stamina
+	player_stats_system = StatsSystem.new(100.0)
 	
 	# Load player inventory
 	var player_inv_data = load("res://data/player_inventory.tres") as InventoryDefinition
@@ -47,17 +47,21 @@ func _physics_process(delta: float):
 	time_system.update(delta)
 	
 	# 2. Update Player Logic
-	# Pass stamina from stats system to movement system
 	movement_system.update(delta, player_stats_system.current_stamina)
 	
-	# 3. Update World (Uncomment when dynamic world logic is added)
+	# 3. Update World
 	# world_system.update(delta) 
 
 # --- Glue Code: Interaction ---
 func player_interact_grid(grid_coords: Vector2i):
-	# Tilling system removed for now. 
-	# This function acts as a placeholder for future tool interactions.
 	print("Simulation: Interact at ", grid_coords)
+
+# --- DEBUG: Testing ---
+func debug_add_test_item():
+	if player_inventory_system:
+		# Adds 1 Parsnip Seed. Ensure "parsnip_seed" matches the ID in your .tres file
+		print("Debug: Adding test item...")
+		player_inventory_system.add_item("parsnip_seed", 1)
 
 # --- Public API for the "View" ---
 

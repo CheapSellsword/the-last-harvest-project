@@ -17,6 +17,13 @@ func _ready():
 func _physics_process(_delta: float):
 	_handle_movement()
 	_handle_interaction_input()
+	
+	# DEBUG: Press P to add item
+	if Input.is_key_pressed(KEY_P):
+		if Input.is_action_just_pressed("ui_accept"): # Prevent spam, simple check
+			pass
+	if Input.is_action_just_pressed("ui_focus_next"): # Usually TAB, using for debug
+		SimulationManager.debug_add_test_item()
 
 func _handle_movement():
 	# 1. Get Input

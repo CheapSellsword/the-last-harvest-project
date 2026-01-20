@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=4 uid="uid://d1vkqqeqyg0yh"]
+[gd_scene load_steps=7 format=4 uid="uid://d1vkqqeqyg0yh"]
 
 [ext_resource type="Script" uid="uid://bg15ks7mvu3sc" path="res://scripts/view/world_view.gd" id="1_0sr1o"]
 [ext_resource type="Texture2D" uid="uid://ddvke7d1d57ok" path="res://assets/art/environment/free/isometric_tileset/spritesheet.png" id="1_sul5r"]
 [ext_resource type="PackedScene" uid="uid://ckbiyamoes2qq" path="res://scenes/player/player_view.tscn" id="2_7h61r"]
+[ext_resource type="PackedScene" uid="uid://cg2wdyn23e5fv" path="res://scenes/ui/inventory_view.tscn" id="4_kelw5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sul5r"]
 texture = ExtResource("1_sul5r")
@@ -185,3 +186,7 @@ y_sort_origin = 24
 z_index = 1
 y_sort_enabled = true
 position = Vector2(-47, -23)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="InventoryView" parent="UI" instance=ExtResource("4_kelw5")]
