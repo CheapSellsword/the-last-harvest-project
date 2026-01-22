@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource("1_nrqy1")
-id = &"\"stone\""
-display_name = "\"Stone\""
+id = &"stone"
+display_name = "Stone"
 metadata/_custom_type_script = "uid://bclc8d2e3axvc"

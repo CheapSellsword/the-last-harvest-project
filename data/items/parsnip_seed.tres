@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource("1_l8avt")
-id = &"\"parsnip_seed\""
-display_name = "\"Parsnip Seed\""
+id = &"parsnip_seed"
+display_name = "Parsnip Seed"
 metadata/_custom_type_script = "uid://bclc8d2e3axvc"

@@ -1,8 +1,12 @@
 extends CharacterBody2D
 
+# --- Configuration ---
+@export var camera_zoom: Vector2 = Vector2(3.0, 3.0) # Higher numbers = closer zoom
+
 # --- Components ---
 @onready var animation_tree: AnimationTree = $AnimationTree
 @onready var cursor_visual = $Cursor
+@onready var camera = $Camera2D
 
 # The State Machine playback allows us to trigger transitions (travel) via code.
 @onready var state_machine = animation_tree.get("parameters/playback")
@@ -13,16 +17,17 @@ func _ready():
 	# Ensure the tree is active. 
 	if animation_tree:
 		animation_tree.active = true
+	
+	# Apply camera zoom
+	if camera:
+		camera.zoom = camera_zoom
 
 func _physics_process(_delta: float):
 	_handle_movement()
 	_handle_interaction_input()
 	
-	# DEBUG: Press P to add item
-	if Input.is_key_pressed(KEY_P):
-		if Input.is_action_just_pressed("ui_accept"): # Prevent spam, simple check
-			pass
-	if Input.is_action_just_pressed("ui_focus_next"): # Usually TAB, using for debug
+	# DEBUG: Press TAB (ui_focus_next) to add test items
+	if Input.is_action_just_pressed("ui_focus_next"): 
 		SimulationManager.debug_add_test_item()
 
 func _handle_movement():
