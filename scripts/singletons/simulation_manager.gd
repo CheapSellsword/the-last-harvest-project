@@ -7,6 +7,7 @@ var player_inventory_system: InventorySystem
 var world_system: WorldSystem
 var movement_system: MovementSystem 
 var player_stats_system: StatsSystem
+var tool_system: ToolSystem
 
 # --- Signals ---
 signal player_position_changed(new_position: Vector2)
@@ -17,6 +18,7 @@ func _ready():
 	world_system = WorldSystem.new()
 	movement_system = MovementSystem.new()
 	player_stats_system = StatsSystem.new(100.0)
+	tool_system = ToolSystem.new()
 	
 	# Load player inventory
 	var player_inv_data = load("res://data/player_inventory.tres") as InventoryDefinition
@@ -43,25 +45,29 @@ func _create_fallback_inventory():
 
 # --- Deliberate Execution Order ---
 func _physics_process(delta: float):
-	# 1. Update Time
 	time_system.update(delta)
-	
-	# 2. Update Player Logic
 	movement_system.update(delta, player_stats_system.current_stamina)
-	
-	# 3. Update World
-	# world_system.update(delta) 
 
 # --- Glue Code: Interaction ---
 func player_interact_grid(grid_coords: Vector2i):
 	print("Simulation: Interact at ", grid_coords)
 
+## Called when player presses "Use Tool" button
+func player_use_tool(target_grid_pos: Vector2i):
+	var selected_item = player_inventory_system.get_selected_item()
+	
+	# Check if we are holding a tool
+	if selected_item is ToolItemDefinition:
+		tool_system.use_tool(selected_item, target_grid_pos, world_system, player_stats_system)
+	else:
+		print("Simulation: No tool selected.")
+
 # --- DEBUG: Testing ---
 func debug_add_test_item():
 	if player_inventory_system:
-		# Adds 1 Parsnip Seed. Ensure "parsnip_seed" matches the ID in your .tres file
-		print("Debug: Adding test item...")
-		player_inventory_system.add_item("parsnip_seed", 1)
+		print("Debug: Adding Hoe and Seeds...")
+		player_inventory_system.add_item("hoe", 1)
+		player_inventory_system.add_item("parsnip_seed", 5)
 
 # --- Public API for the "View" ---
 

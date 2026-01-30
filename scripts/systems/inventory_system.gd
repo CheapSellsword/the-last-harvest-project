@@ -1,18 +1,15 @@
 # inventory_system.gd
 # A modular, non-node class for handling inventory LOGIC.
-# It is "glued" in by the SimulationManager.
-# It operates on an InventoryDefinition resource.
 
 class_name InventorySystem
 extends RefCounted
 
-# --- Signal ---
-# Emits when any slot is changed. UI connects to this.
 signal inventory_changed(slot_index: int)
+signal selection_changed(slot_index: int)
 
 # --- State ---
-# This is the *data* this system manages.
 var _inventory_data: InventoryDefinition
+var selected_slot_index: int = 0
 
 # --- Public API ---
 
@@ -23,9 +20,18 @@ func _init(data: InventoryDefinition):
 		printerr("InventorySystem: Initialized with null data!")
 		_inventory_data = InventoryDefinition.new()
 
+func select_slot(index: int):
+	if index >= 0 and index < _inventory_data.slots.size():
+		selected_slot_index = index
+		selection_changed.emit(selected_slot_index)
+
+func get_selected_item() -> ItemDefinition:
+	var slot = get_slot(selected_slot_index)
+	if slot and not slot.is_empty():
+		return slot.item
+	return null
+
 ## Tries to add an item to the inventory.
-## First, tries to stack. Second, tries to find an empty slot.
-## Returns: int (amount of item that *could not* be added)
 func add_item(item_id: StringName, amount: int) -> int:
 	var item_def = ItemDatabase.get_item(item_id)
 	if !item_def:
@@ -34,7 +40,7 @@ func add_item(item_id: StringName, amount: int) -> int:
 		
 	var amount_to_add = amount
 	
-	# --- 1. Try to stack ---
+	# 1. Try to stack
 	if item_def.stackable:
 		for i in _inventory_data.slots.size():
 			var slot = _inventory_data.slots[i]
@@ -45,11 +51,9 @@ func add_item(item_id: StringName, amount: int) -> int:
 					slot.quantity += add_amount
 					amount_to_add -= add_amount
 					inventory_changed.emit(i)
-					
-					if amount_to_add <= 0:
-						return 0 # All items added
+					if amount_to_add <= 0: return 0
 	
-	# --- 2. Try to find empty slot ---
+	# 2. Try to find empty slot
 	if amount_to_add > 0:
 		for i in _inventory_data.slots.size():
 			var slot = _inventory_data.slots[i]
@@ -59,27 +63,18 @@ func add_item(item_id: StringName, amount: int) -> int:
 				slot.quantity = add_amount
 				amount_to_add -= add_amount
 				inventory_changed.emit(i)
-				
-				if amount_to_add <= 0:
-					return 0 # All items added
+				if amount_to_add <= 0: return 0
 	
-	# --- Return leftover amount ---
 	return amount_to_add
 
-## Removes a specific amount of an item from a slot.
 func remove_item_from_slot(slot_index: int, amount: int):
-	if slot_index < 0 or slot_index >= _inventory_data.slots.size():
-		return
-		
+	if slot_index < 0 or slot_index >= _inventory_data.slots.size(): return
 	var slot = _inventory_data.slots[slot_index]
 	if !slot.is_empty():
 		slot.quantity -= amount
-		if slot.quantity <= 0:
-			slot.clear() # clear() will set quantity to 0 and item to null
-		
+		if slot.quantity <= 0: slot.clear()
 		inventory_changed.emit(slot_index)
 
-# --- Getters for the "View" (UI) ---
 func get_slot_count() -> int:
 	return _inventory_data.slots.size()
 

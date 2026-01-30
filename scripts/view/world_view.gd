@@ -13,8 +13,6 @@ func _ready():
 		return
 	
 	# --- THE GLUE ---
-	# Connect to the WorldSystem signals.
-	# Note: We access it via the SimulationManager singleton.
 	var world_sys = SimulationManager.get_world_system()
 	if world_sys:
 		world_sys.tile_changed.connect(_on_tile_changed)
@@ -23,12 +21,17 @@ func _ready():
 # --- Signal Handlers ---
 
 func _on_tile_changed(map_coords: Vector2i, data: WorldTileData):
-	# The Simulation told us a tile changed.
-	# Tilling visualization removed.
+	# The Simulation told us a tile changed. We interpret the data into visuals.
 	
-	# Future implementation:
-	# if data.crop_definition_id != &"": ...
-	pass
+	if data.is_tilled:
+		if data.is_watered:
+			# _paint_tile(map_coords, GameConsts.ATLAS_COORDS_WATERED) # Future
+			pass 
+		else:
+			_paint_tile(map_coords, GameConsts.ATLAS_COORDS_TILLED)
+	else:
+		# If it's not tilled, maybe it's back to grass?
+		_paint_tile(map_coords, GameConsts.ATLAS_COORDS_GRASS)
 
 func _on_tile_cleared(map_coords: Vector2i):
 	# Revert to default (grass)
