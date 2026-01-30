@@ -1,15 +1,13 @@
-[gd_resource type="Resource" script_class="ToolItemDefinition" load_steps=3 format=3 uid="uid://c8j7k4x2q1y3z"]
+[gd_resource type="Resource" script_class="ToolItemDefinition" load_steps=2 format=3 uid="uid://c8q1n4g3k4l2"]
 
-[ext_resource type="Script" uid="uid://bclc8d2e3axvc" path="res://data/definitions/item_definition.gd" id="1_base"]
-[ext_resource type="Script" uid="uid://dk48s7f2j3k9l" path="res://data/definitions/tool_item_definition.gd" id="2_tool"]
+[ext_resource type="Script" path="res://data/definitions/tool_item_definition.gd" id="1_definitions"]
 
 [resource]
-script = ExtResource("2_tool")
-tool_type = "hoe"
-stamina_cost = 2
+script = ExtResource("1_definitions")
+tool_type = 0
+stamina_cost = 2.0
 id = &"hoe"
 display_name = "Hoe"
 description = "Used to till soil."
 stackable = false
 max_stack_size = 1
-metadata/_custom_type_script = "uid://dk48s7f2j3k9l"
