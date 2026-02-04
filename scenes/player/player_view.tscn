@@ -2081,7 +2081,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_ncbk8"]
 length = 0.44444445
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -2109,7 +2108,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_lx0yv"]
 length = 0.44444445
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -2137,7 +2135,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_5xvpi"]
 length = 0.44444445
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -2165,7 +2162,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_ch8ug"]
 length = 0.44444445
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -2193,7 +2189,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_5f270"]
 length = 0.44444445
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -2221,7 +2216,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_7ag81"]
 length = 0.44444445
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -2249,7 +2243,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_osrt1"]
 length = 0.44444445
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -2277,7 +2270,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_fmmsv"]
 length = 0.44444445
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -2995,7 +2987,7 @@ script = ExtResource("1_s6xuj")
 scale = Vector2(0.7, 0.7)
 sprite_frames = SubResource("SpriteFrames_fkksv")
 animation = &"idle_down"
-frame = 5
+frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_w53eo")
