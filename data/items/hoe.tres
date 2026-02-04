@@ -1,3 +1,13 @@
-[gd_resource type="Resource" format=3 uid="uid://c8q1n4g3k4l2"]
+[gd_resource type="Resource" script_class="ToolItemDefinition" load_steps=2 format=3 uid="uid://c8q1n4g3k4l2"]
+
+[ext_resource type="Script" path="res://data/definitions/tool_item_definition.gd" id="1_definitions"]
 
 [resource]
+script = ExtResource("1_definitions")
+tool_type = 0
+stamina_cost = 2.0
+id = &"hoe"
+display_name = "Hoe"
+description = "Used to till soil."
+stackable = false
+max_stack_size = 1
